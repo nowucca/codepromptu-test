@@ -6,3 +6,4 @@ starlette
 uvicorn
 schemathesis
 pytest
+aiohttp

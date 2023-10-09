@@ -1,8 +1,8 @@
 import pytest
 import schemathesis
 
-from . import BASE_URL, get_auth_basic_credentials, hooks
-from .hooks import add_pytest_tag  # noqa
+from conftest import BASE_URL, get_auth_basic_credentials
+from hooks import add_pytest_tag  # noqa
 
 # Load the schema from the API.
 # Replace "http://your-api-url/openapi.json" with the actual URL to your OpenAPI schema.
