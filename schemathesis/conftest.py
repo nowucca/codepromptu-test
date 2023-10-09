@@ -9,6 +9,7 @@ load_dotenv()
 BASE_URL="http://aitools.cs.vt.edu:8000"
 TEST_USERNAME = os.getenv('TEST_USERNAME')
 TEST_PASSWORD = os.getenv('TEST_PASSWORD')
+DISCRIMINATOR_TAG = "pytest-" + TEST_USERNAME
 
 
 def get_auth_basic_credentials():
@@ -29,7 +30,7 @@ def teardown_database():
 
     # After test completion, perform the teardown:
     # Assuming you have a function/API to fetch prompts by tags
-    response = requests.get(f"{BASE_URL}/private/prompt/tags?tags=pytest", auth=(f"{TEST_USERNAME}", f"{TEST_PASSWORD}"))
+    response = requests.get(f"{BASE_URL}/private/prompt/tags?tags={DISCRIMINATOR_TAG}", auth=(f"{TEST_USERNAME}", f"{TEST_PASSWORD}"))
     if response.status_code == 200:
         for prompt in response.json():
             guid = prompt["guid"]
