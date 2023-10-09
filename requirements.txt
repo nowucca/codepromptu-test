@@ -7,3 +7,5 @@ uvicorn
 schemathesis
 pytest
 aiohttp
+pytest-asyncio
+
