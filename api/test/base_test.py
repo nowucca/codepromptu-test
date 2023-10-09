@@ -1,3 +1,5 @@
+import asyncio
+
 import pytest
 from dotenv import load_dotenv
 import os
@@ -12,18 +14,6 @@ load_dotenv()
 class BaseTest:
     TEST_USERNAME = os.getenv('TEST_USERNAME')
 
-    @pytest.fixture(autouse=True)  # autouse=True makes it automatically applied to tests
-    async def clear_prompts(self, alice: PublicUserSession, bob: PrivateUserSession):
-        """Fixture to delete prompts tagged as 'pytest' after every test."""
-        yield
-        # code to delete prompts tagged as 'pytest' here
-        discriminator_tag = "pytest-" + self.TEST_USERNAME
-        alice_tags = await alice.list_prompts_by_tags([discriminator_tag])
-        bob_tags = await bob.list_prompts_by_tags([discriminator_tag])
-        for prompt in alice_tags:
-            await alice.delete_prompt(prompt['guid'])
-        for prompt in bob_tags:
-            await bob.delete_prompt(prompt['guid'])
 
     @pytest.fixture(scope='function')
     def alice(self) -> PublicUserSession:
@@ -47,3 +37,26 @@ class BaseTest:
         password = os.getenv("TEST_PASSWORD")
         user = User(username, password)
         return PrivateUserSession(user)
+
+    @pytest.fixture(autouse=True)
+    def clear_prompts_sync(self, adrianna: PublicUserSession, bob: PrivateUserSession):
+        yield
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self._clear_prompts(adrianna, bob))
+
+    async def _clear_prompts(self, adrianna: PublicUserSession, bob: PrivateUserSession):
+        """Fixture to delete prompts tagged as 'pytest' after every test."""
+        try:
+            # code to delete prompts tagged as 'pytest' here
+            discriminator_tag = "pytest-" + self.TEST_USERNAME
+            print(f"Clearing prompts tagged as '{discriminator_tag}'...", flush=True)
+            alice_tags = await adrianna.list_prompts_by_tags([discriminator_tag])
+            bob_tags = await bob.list_prompts_by_tags([discriminator_tag])
+            if alice_tags:
+                for prompt in alice_tags:
+                    await adrianna.delete_prompt(prompt['guid'])
+            if bob_tags:
+                for prompt in bob_tags:
+                    await bob.delete_prompt(prompt['guid'])
+        except Exception as e:
+            print(f"Exception in clear_prompts: {e}")

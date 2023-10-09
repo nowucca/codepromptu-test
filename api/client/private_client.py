@@ -30,6 +30,10 @@ class PrivatePromptClient(CoreClientInterface):
             resp = await session.post(f'{self.BASE_URL}/private/prompt/', json=prompt_data, auth=self._auth)
             return (await resp.text()).strip('"')
 
+    async def get_prompt(self, guid: str) -> dict[str, any]:
+        async with aiohttp.ClientSession() as session:
+            resp = await session.get(f'{self.BASE_URL}/private/prompt/{guid}', auth=self._auth)
+            return await resp.json()
 
     async def list_prompts(self, skip: int = 0, limit: int = 10) -> List[dict]:
         async with aiohttp.ClientSession() as session:
