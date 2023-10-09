@@ -24,8 +24,8 @@ class BaseTest:
     def adrianna(self) -> PublicUserSession:
         """Fixture to provide a public session with an admin user."""
         load_dotenv()
-        username = os.getenv("TEST_USERNAME")
-        password = os.getenv("TEST_PASSWORD")
+        username = os.getenv("ADMIN_TEST_USERNAME")
+        password = os.getenv("ADMIN_TEST_PASSWORD")
         user = User(username, password)
         return PublicUserSession(user)
 
