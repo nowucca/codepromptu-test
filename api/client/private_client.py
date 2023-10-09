@@ -28,7 +28,7 @@ class PrivatePromptClient(CoreClientInterface):
         async with aiohttp.ClientSession() as session:
             await self._ensure_discriminator_tag(prompt_data)
             resp = await session.post(f'{self.BASE_URL}/private/prompt/', json=prompt_data, auth=self._auth)
-            return await resp.text()
+            return (await resp.text()).strip('"')
 
 
     async def list_prompts(self, skip: int = 0, limit: int = 10) -> List[dict]:

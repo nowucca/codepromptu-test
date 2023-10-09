@@ -8,6 +8,7 @@ from api.session.session import PublicUserSession, PrivateUserSession
 load_dotenv()
 
 
+@pytest.mark.asyncio
 class BaseTest:
     TEST_USERNAME = os.getenv('TEST_USERNAME')
 
@@ -25,12 +26,12 @@ class BaseTest:
             await bob.delete_prompt(prompt['guid'])
 
     @pytest.fixture(scope='function')
-    async def alice(self) -> PublicUserSession:
+    def alice(self) -> PublicUserSession:
         """Fixture to provide a public session without a user."""
         return PublicUserSession()
 
     @pytest.fixture(scope='function')
-    async def adrianna(self) -> PublicUserSession:
+    def adrianna(self) -> PublicUserSession:
         """Fixture to provide a public session with an admin user."""
         load_dotenv()
         username = os.getenv("TEST_USERNAME")
@@ -39,7 +40,7 @@ class BaseTest:
         return PublicUserSession(user)
 
     @pytest.fixture(scope='function')
-    async def bob(self) -> PrivateUserSession:
+    def bob(self) -> PrivateUserSession:
         """Fixture to provide a private session with a user."""
         load_dotenv()
         username = os.getenv("TEST_USERNAME")

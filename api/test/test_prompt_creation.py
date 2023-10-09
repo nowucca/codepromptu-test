@@ -7,7 +7,7 @@ from api.test.base_test import BaseTest
 @pytest.mark.asyncio
 class TestPromptCreation(BaseTest):
 
-    async def setup(self):
+    def setup_method(self, method) -> None:
         """Setup method for test case data generation."""
         self.sample_prompt_data = {
             "content": "This is a sample {input} for testing.",
