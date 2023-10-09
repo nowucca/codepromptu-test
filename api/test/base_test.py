@@ -5,16 +5,20 @@ import os
 from api.client.user import User
 from api.session.session import PublicUserSession, PrivateUserSession
 
+load_dotenv()
+
 
 class BaseTest:
+    TEST_USERNAME = os.getenv('TEST_USERNAME')
 
     @pytest.fixture(autouse=True)  # autouse=True makes it automatically applied to tests
     async def clear_prompts(self, alice: PublicUserSession, bob: PrivateUserSession):
         """Fixture to delete prompts tagged as 'pytest' after every test."""
         yield
         # code to delete prompts tagged as 'pytest' here
-        alice_tags = await alice.list_prompts_by_tags(["pytest"])
-        bob_tags = await bob.list_prompts_by_tags(["pytest"])
+        discriminator_tag = "pytest-" + self.TEST_USERNAME
+        alice_tags = await alice.list_prompts_by_tags([discriminator_tag])
+        bob_tags = await bob.list_prompts_by_tags([discriminator_tag])
         for prompt in alice_tags:
             await alice.delete_prompt(prompt['guid'])
         for prompt in bob_tags:
