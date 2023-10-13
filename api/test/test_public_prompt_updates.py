@@ -1,3 +1,5 @@
+import asyncio
+
 import pytest
 
 from api.session.session import PublicUserSession, PrivateUserSession
@@ -8,12 +10,17 @@ from api.test.base_test import BaseTest
 class TestPublicPromptUpdates(BaseTest):
     """Test scenarios related to the updating of public prompts."""
 
+    @pytest.fixture(autouse=True)
+    def setup_public_prompt(self, adrianna: PublicUserSession):
+        loop = asyncio.get_event_loop()
+        return loop.run_until_complete(self._setup_public_prompt_async(adrianna))
+
     @pytest.fixture
-    async def setup_public_prompt(self, adrianna: PublicUserSession) -> str:
+    async def _setup_public_prompt_async(self, adrianna: PublicUserSession) -> str:
         prompt_data = {"content": "{input} translates to {output}", "tags": ["public", "translation"],
                        "classification": "public_data"}
         prompt_id = await adrianna.add_prompt(prompt_data)
-        yield prompt_id
+        return prompt_id
 
     async def test_adrianna_updates_public_prompt_check_update(self, setup_public_prompt, adrianna: PublicUserSession):
         """Given a public prompt, when Adrianna updates its content,
