@@ -15,7 +15,6 @@ class TestPublicPromptUpdates(BaseTest):
         loop = asyncio.get_event_loop()
         return loop.run_until_complete(self._setup_public_prompt_async(adrianna))
 
-    @pytest.fixture
     async def _setup_public_prompt_async(self, adrianna: PublicUserSession) -> str:
         prompt_data = {"content": "{input} translates to {output}", "tags": ["public", "translation"],
                        "classification": "public_data"}
