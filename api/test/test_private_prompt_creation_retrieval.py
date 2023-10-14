@@ -1,18 +1,27 @@
+import asyncio
+
 import pytest
 
 from api.session.session import PrivateUserSession, PublicUserSession
+from api.test.base_test import BaseTest
 
 
 @pytest.mark.asyncio
-class TestPrivatePromptCreationRetrieval:
+class TestPrivatePromptCreationRetrieval(BaseTest):
     """Test scenarios related to the creation of private prompts and their retrieval."""
 
     @pytest.fixture
-    async def setup_private_prompt(self, bob: PrivateUserSession) -> str:
+    def setup_private_prompt(self, bob: PrivateUserSession) -> str:
+        """Fixture to create a private prompt for Bob."""
+        loop = asyncio.get_event_loop()
+        return loop.run_until_complete(self._setup_private_prompt_async(bob))
+
+    @staticmethod
+    async def _setup_private_prompt_async(bob: PrivateUserSession) -> str:
         prompt_data = {"content": "{input} becomes {output}", "tags": ["private", "example"],
                        "classification": "personal"}
         prompt_id = await bob.add_prompt(prompt_data)
-        yield prompt_id
+        return prompt_id
 
     async def test_bob_creates_private_prompt_retrieved_by_him(self, setup_private_prompt, bob: PrivateUserSession):
         """Given a private prompt created by Bob, when he retrieves it, then the retrieved prompt
@@ -23,8 +32,9 @@ class TestPrivatePromptCreationRetrieval:
 
     async def test_alice_fails_to_retrieve_bob_private_prompt(self, setup_private_prompt, alice: PublicUserSession):
         """Given a private prompt created by Bob, when Alice attempts to retrieve it, then she should get an error."""
+        prompt_id = setup_private_prompt
         with pytest.raises(Exception):  # assuming the API throws an error for unauthorized access
-            await alice.get_prompt(setup_private_prompt)
+            await alice.get_prompt(prompt_id)
 
     async def test_retrieve_non_existent_private_prompt(self, bob: PrivateUserSession):
         """Given a non-existent private prompt GUID, when Bob tries to retrieve it, then he should get an error."""
