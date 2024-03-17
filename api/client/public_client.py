@@ -62,20 +62,19 @@ class PublicClient(CoreClientInterface):
             await self._handle_response(response)
             return await response.json()
 
-    async def search_prompts(self, query: str) -> List[dict]:
-        async with aiohttp.ClientSession() as session:
-            response = await session.get(f'{self.BASE_URL}/public/prompt/search/?query={query}')
-            await self._handle_response(response)
-            return await response.json()
-
     async def list_prompts_by_tags(self, tags: List[str]) -> List[dict]:
         async with aiohttp.ClientSession() as session:
             response = await session.get(f'{self.BASE_URL}/public/prompt/tags/?tags={",".join(tags)}')
             await self._handle_response(response)
             return await response.json()
 
-    async def list_prompts_by_classification(self, classification: str) -> List[dict]:
+    async def add_tag_to_prompt(self, guid: str, tag: str) -> None:
         async with aiohttp.ClientSession() as session:
-            response = await session.get(f'{self.BASE_URL}/public/prompt/classification/{classification}')
-            await self._handle_response(response)
-            return await response.json()
+            response = await session.post(f'{self.BASE_URL}/private/prompt/{guid}/tag/{tag}')
+            await self._handle_response(response, expected_status=204)
+
+    async def remove_tag_from_prompt(self, guid: str, tag: str) -> None:
+        async with aiohttp.ClientSession() as session:
+            response = await session.delete(f'{self.BASE_URL}/private/prompt/{guid}/tag/{tag}')
+            await self._handle_response(response, expected_status=204)
+
