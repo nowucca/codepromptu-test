@@ -5,18 +5,18 @@ You're writing tests for an API, described as:
 ```
 
 The architecture of the test cases is three layers:
-1. Core client layer (folder=client) 
+1. Core client layer (folder=client)
 2. Test user session layer (folder=session)
 3. Test Case layer (folder=test)
 
-Let's use aiohttp for our core client layer.  
+Let's use aiohttp for our core client layer.
 Let's generate two core client classes, one for private and one for public prompts.
 Let's allow these classes to read the .env for TEST_USERNAME.
 Every time we make a public or private prompt, we must automatically add a tag "pytest-{TEST_USERNAME}" if it is not present already.
 This will let us clean up our database.
 
 Let's use pytest for our test user session layer.
-THis layer will introduce a class called TestUserSession.
+This layer will introduce a class called TestUserSession.
 Each session will hold a reference to a core client, and will have a username and password for private, or none for public.
 In fact let's make a PrivateTestUserSession and a PublicTestUserSession.
 

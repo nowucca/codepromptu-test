@@ -18,12 +18,28 @@ class CoreClientInterface(Protocol):
     async def get_prompt(self, guid: str) -> dict[str, any]:
         ...
 
-    async def search_prompts(self, query: str) -> List[dict]:
-        ...
 
     async def list_prompts_by_tags(self, tags: List[str]) -> List[dict]:
         ...
 
-    # Additional methods as needed
-    async def list_prompts_by_classification(self, classification: str) -> List[dict]:
-        ...
+    async def add_tag_to_prompt(self, guid: str, tag: str) -> None:
+        """Adds a tag to a prompt specified by its GUID.
+
+        Args:
+            guid (str): The unique identifier for the prompt.
+            tag (str): The tag to add to the prompt.
+
+        Raises:
+            Exception: If the operation is unsuccessful.
+        """
+
+    async def remove_tag_from_prompt(self, guid: str, tag: str) -> None:
+        """Removes a tag from a prompt specified by its GUID.
+
+        Args:
+            guid (str): The unique identifier for the prompt.
+            tag (str): The tag to remove from the prompt.
+
+        Raises:
+            Exception: If the operation is unsuccessful.
+        """

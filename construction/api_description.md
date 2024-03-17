@@ -1,146 +1,116 @@
 
-### FastAPI (Version 0.1.0)
+### `/public/prompt/`
 
----
+- **POST**
+  - **Summary**: Add a new prompt. Requires an admin user.
+  - **Parameters**: None
+  - **Body**: Required, based on `PromptCreate` schema
+  - **Responses**: 201 (Successful Response), 422 (Validation Error)
 
-#### Public Endpoints:
+- **GET**
+  - **Summary**: List all prompts.
+  - **Parameters**: `skip` (optional, integer, default 0), `limit` (optional, integer, default 10)
+  - **Responses**: 200 (Successful Response), 422 (Validation Error)
 
-1. **Add New Public Prompt**  
-   - **Endpoint**: `POST /public/prompt/`
-   - Requires admin user with basic authentication.
-   - Accepts a new prompt in JSON format.
-   - Responses: 201 (Successful), 422 (Validation Error).
+### `/public/prompt/{guid}`
 
-2. **List All Public Prompts**  
-   - **Endpoint**: `GET /public/prompt/`
-   - Parameters: `skip` (defaults to 0), `limit` (defaults to 10).
-   - Returns a list of prompts.
-   - Responses: 200 (Successful), 422 (Validation Error).
+- **DELETE**
+  - **Summary**: Delete a prompt by GUID. Requires an admin user.
+  - **Parameters**: `guid` (required, string)
+  - **Responses**: 204 (Successful Response), 422 (Validation Error)
 
-3. **Delete a Public Prompt by GUID**  
-   - **Endpoint**: `DELETE /public/prompt/{guid}`
-   - Requires admin user with basic authentication.
-   - Responses: 204 (Successful), 422 (Validation Error).
+- **PUT**
+  - **Summary**: Update a prompt by GUID. Requires an admin user.
+  - **Parameters**: `guid` (required, string)
+  - **Body**: Required, based on `PromptUpdate` schema
+  - **Responses**: 204 (Successful Response), 422 (Validation Error)
 
-4. **Update a Public Prompt by GUID**  
-   - **Endpoint**: `PUT /public/prompt/{guid}`
-   - Requires admin user with basic authentication.
-   - Accepts updated prompt data in JSON format.
-   - Responses: 200 (Successful), 422 (Validation Error).
+- **GET**
+  - **Summary**: Retrieve a prompt by GUID.
+  - **Parameters**: `guid` (required, string)
+  - **Responses**: 200 (Successful Response), 422 (Validation Error)
 
-5. **Retrieve a Public Prompt by GUID**  
-   - **Endpoint**: `GET /public/prompt/{guid}`
-   - Returns specific prompt data.
-   - Responses: 200 (Successful), 422 (Validation Error).
+### `/public/prompt/name/{name}`
 
-6. **Search Public Prompts**  
-   - **Endpoint**: `GET /public/prompt/search/`
-   - Parameters: `query` (required).
-   - Returns a list of matching prompts.
-   - Responses: 200 (Successful), 422 (Validation Error).
+- **GET**
+  - **Summary**: Retrieve a prompt by name.
+  - **Parameters**: `name` (required, string)
+  - **Responses**: 200 (Successful Response), 422 (Validation Error)
 
-7. **List Public Prompts by Tag**  
-   - **Endpoint**: `GET /public/prompt/tags/{tag}`
-   - Returns prompts with a specific tag.
-   - Responses: 200 (Successful), 422 (Validation Error).
+### `/public/prompt/tags/`
 
-8. **List Public Prompts by Classification**  
-   - **Endpoint**: `GET /public/prompt/classification/{classification}`
-   - Returns prompts of a specific classification.
-   - Responses: 200 (Successful), 422 (Validation Error).
+- **GET**
+  - **Summary**: List Public Prompts by Tag.
+  - **Parameters**: `tags` (optional, string, comma-separated list of tags)
+  - **Responses**: 200 (Successful Response), 422 (Validation Error)
 
----
+### `/public/prompt/{guid}/tag/{tag}`
 
-#### Private (Per-user) Endpoints:
+- **POST**
+  - **Summary**: Add a tag to a prompt by GUID. Requires an admin user.
+  - **Parameters**: `guid` (required, string), `tag` (required, string)
+  - **Responses**: 204 (Successful Response), 422 (Validation Error)
 
-1. **Test Login**  
-   - **Endpoint**: `GET /private/login`
-   - Tests login with basic authentication.
-   - Response: 204 (Successful).
+- **DELETE**
+  - **Summary**: Remove a tag from a prompt by GUID. Requires an admin user.
+  - **Parameters**: `guid` (required, string), `tag` (required, string)
+  - **Responses**: 204 (Successful Response), 422 (Validation Error)
 
-2. **Add New Private Prompt**  
-   - **Endpoint**: `POST /private/prompt/`
-   - Requires basic authentication.
-   - Accepts a new prompt in JSON format.
-   - Responses: 201 (Successful), 422 (Validation Error).
+### `/private/prompt/`
 
-3. **List All Private Prompts**  
-   - **Endpoint**: `GET /private/prompt/`
-   - Parameters: `skip` (defaults to 0), `limit` (defaults to 10).
-   - Requires basic authentication.
-   - Returns a list of private prompts.
-   - Responses: 200 (Successful), 422 (Validation Error).
+- **POST**
+  - **Summary**: Add a new private prompt. Requires a logged-in user.
+  - **Parameters**: None
+  - **Body**: Required, based on `PromptCreate` schema
+  - **Responses**: 201 (Successful Response), 422 (Validation Error)
 
-4. **Delete a Private Prompt by GUID**  
-   - **Endpoint**: `DELETE /private/prompt/{guid}`
-   - Requires basic authentication.
-   - Responses: 204 (Successful), 422 (Validation Error).
+- **GET**
+  - **Summary**: List all private prompts of the logged-in user.
+  - **Parameters**: `skip` (optional, integer, default 0), `limit` (optional, integer, default 10)
+  - **Responses**: 200 (Successful Response), 422 (Validation Error)
 
-5. **Update a Private Prompt by GUID**  
-   - **Endpoint**: `PUT /private/prompt/{guid}`
-   - Requires basic authentication.
-   - Accepts updated prompt data in JSON format.
-   - Responses: 200 (Successful), 422 (Validation Error).
+### `/private/prompt/{guid}`
 
-6. **Search Private Prompts**  
-   - **Endpoint**: `GET /private/prompt/search`
-   - Requires basic authentication.
-   - Parameters: `query` (required).
-   - Returns a list of matching private prompts.
-   - Responses: 200 (Successful), 422 (Validation Error).
+- **DELETE**
+  - **Summary**: Delete a private prompt by GUID. Requires the owner of the prompt.
+  - **Parameters**: `guid` (required, string)
+  - **Responses**: 204 (Successful Response), 422 (Validation Error)
 
-7. **List Private Prompts by Tag**  
-   - **Endpoint**: `GET /private/prompt/tags?tags={tag1,tag2,...}`
-   - Requires basic authentication.
-   - Returns private prompts with a specific tag.
-   - Responses: 200 (Successful), 422 (Validation Error).
+- **PUT**
+  - **Summary**: Update a private prompt by GUID. Requires the owner of the prompt.
+  - **Parameters**: `guid` (required, string)
+  - **Body**: Required, based on `PromptUpdate` schema
+  - **Responses**: 204 (Successful Response), 422 (Validation Error)
 
-8. **List Private Prompts by Classification**  
-   - **Endpoint**: `GET /private/prompt/classification/{classification}/`
-   - Requires basic authentication.
-   - Returns private prompts of a specific classification.
-   - Responses: 200 (Successful), 422 (Validation Error).
+- **GET**
+  - **Summary**: Retrieve a private prompt by GUID.
+  - **Parameters**: `guid` (required, string)
+  - **Responses**: 200 (Successful Response), 422 (Validation Error)
 
----
+### `/private/prompt/name/{name}`
+
+- **GET**
+  - **Summary**: Retrieve a private prompt by name.
+  - **Parameters**: `name` (required, string)
+  - **Responses**: 200 (Successful Response), 422 (Validation Error)
+
+### `/private/prompt/tags/`
+
+- **GET**
+  - **Summary**: List Private Prompts by Tag.
+  - **Parameters**: `tags` (optional, string, comma-separated list of tags)
+  - **Responses**: 200 (Successful Response), 422 (Validation Error)
+
+### `/private/prompt/{guid}/tag/{tag}`
+
+- **POST**
+  - **Summary**: Add a tag to a private prompt by GUID. Requires the owner of the prompt.
 
 
-### Schemas:
+ - **Parameters**: `guid` (required, string), `tag` (required, string)
+  - **Responses**: 204 (Successful Response), 422 (Validation Error)
 
----
-
-#### 1. **Prompt**
-
-- **Used In**: Request and response data for many endpoints related to prompts, both public and private.
-  
-- **Properties**:
-  - `guid`: A unique identifier string for the prompt.
-  - `internal_id`: An internal integer ID or null.
-  - `content`: The content of the prompt as a string.
-  - `input_variables`: An array of Variables (described below) for inputs.
-  - `output_variables`: An array of Variables (described below) for outputs.
-  - `tags`: An array of strings representing various tags associated with the prompt.
-  - `classification`: A string that classifies the prompt.
-  - `author`: An integer representing the author's ID.
-  - `created_at`: A timestamp of when the prompt was created.
-  - `updated_at`: A timestamp of the last update, or null if not updated.
-
-#### 2. **HTTPValidationError**
-
-- **Used In**: Error responses for validation issues (typically 422 responses).
-
-- **Properties**:
-  - `detail`: An array of ValidationError items which provide details about the validation error.
-  
-#### 3. **Variable**
-
-- **Used In**: Within the `input_variables` and `output_variables` properties of the "Prompt" schema.
-
-- **Properties**:
-  - `name`: The name of the variable.
-  - `description`: A description of the variable.
-  - `type`: The type of the variable (e.g., string, integer).
-  - `expected_format`: Expected format of the variable, defaults to "text/plain".
-
----
-
-With these definitions in mind, it becomes clear that when interacting with prompt-related endpoints, the data exchanged (either sent or received) often adheres to the **Prompt** schema, which itself contains **Variable** items. On the other hand, if there are issues with the data validation (for example, missing required fields, incorrect data types), the response will likely adhere to the **HTTPValidationError** schema.
+- **DELETE**
+  - **Summary**: Remove a tag from a private prompt by GUID. Requires the owner of the prompt.
+  - **Parameters**: `guid` (required, string), `tag` (required, string)
+  - **Responses**: 204 (Successful Response), 422 (Validation Error)

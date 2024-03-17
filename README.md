@@ -13,8 +13,3 @@ To run the api tests, run:
 pytest api
 ```
 
-To run the schemathesis tests, run:
-```bash
-pytest schemathesis
-```
-
