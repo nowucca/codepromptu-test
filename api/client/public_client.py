@@ -70,11 +70,11 @@ class PublicClient(CoreClientInterface):
 
     async def add_tag_to_prompt(self, guid: str, tag: str) -> None:
         async with aiohttp.ClientSession() as session:
-            response = await session.post(f'{self.BASE_URL}/private/prompt/{guid}/tag/{tag}')
+            response = await session.post(f'{self.BASE_URL}/private/prompt/{guid}/tag/{tag}', auth=self.auth)
             await self._handle_response(response, expected_status=204)
 
     async def remove_tag_from_prompt(self, guid: str, tag: str) -> None:
         async with aiohttp.ClientSession() as session:
-            response = await session.delete(f'{self.BASE_URL}/private/prompt/{guid}/tag/{tag}')
+            response = await session.delete(f'{self.BASE_URL}/private/prompt/{guid}/tag/{tag}', auth=self.auth)
             await self._handle_response(response, expected_status=204)
 

@@ -19,6 +19,7 @@ class PublicUserSession(TestUserSession):
 
     def __init__(self, user: Optional[User] = None, display_name: Optional[str] = None):
         super().__init__(display_name or "Anonymous Public User")
+        self.user = user # None if not logged in as admin
         self.client: CoreClientInterface = self.client_cls(user)
 
     async def add_prompt(self, prompt_data: dict[str, any]) -> str:

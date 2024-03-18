@@ -1,7 +1,7 @@
 import pytest
 
 from api.session.session import TestUserSession
-from base_test import BaseTest
+from .base_test import BaseTest
 
 
 @pytest.mark.asyncio

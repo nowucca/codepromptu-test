@@ -39,7 +39,7 @@ The content of a prompt can contain a display_name, text content, and a list of 
 Tags are just strings.  A prompt can have multiple tags.
 
 If Bob creates a private prompt, only Bob can see it, Alice cannot.
-If Alice creates a public prompt, everyone can see it including Alice.
+If Alice creates a public prompt, everyone can see it including Alice but only if they use the /public endpoint.
 
 We have facilities to create a prompt (getting a guid) with fields content, tags and display_name specified,
 look at a prompt by guid, delete a prompt by guid, update a prompt by guid with fields content, tags, display_name specified,
