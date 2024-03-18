@@ -35,18 +35,18 @@ at once to test for coherent behavior.
 
 Let's pause to breath and think of what we can do with this api.
 We have prompts we can create publicly or privately.
-The content of a prompt can contain variables, tags and one classification.
-Variable syntax forms are: {input}, {output}, {input?}, {output!}, {input:mime-type-format}, {output!:mime-type-format}, {input:mime-type-format:description}, {output!:mime-type-format:description}.
+The content of a prompt can contain a display_name, text content, and a list of tags.
 Tags are just strings.  A prompt can have multiple tags.
-Classifications are just strings.
 
 If Bob creates a private prompt, only Bob can see it, Alice cannot.
-If you create a public prompt, everyone can see it including Alice.
+If Alice creates a public prompt, everyone can see it including Alice.
 
-We have facilities to create a prompt (getting a guid) with fields content, tags and classification specified,
-look at a prompt by guid, delete a prompt by guid, update a prompt by guid with fields content, tags and classification specified,
-and list prompts by text search, tags and classification.
+We have facilities to create a prompt (getting a guid) with fields content, tags and display_name specified,
+look at a prompt by guid, delete a prompt by guid, update a prompt by guid with fields content, tags, display_name specified,
+list prompts by tag names, add and remove tags from a prompt.
 
-Using this, let's write some test case classes with Alice, Adrianna and Bob, and see what we can do
-to test the API for exhaustive coherent behavior.
+Using this, let's come up with English description of test cases in groups related to the functionality they are testing.  
+Make sure the English will be understood to generate code in a later step.
+Let's now consider constructing the test case layer.
+
 

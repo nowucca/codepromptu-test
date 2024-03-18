@@ -6,10 +6,19 @@ from api.client.public_client import PublicClient
 from api.client.private_client import PrivatePromptClient
 
 
-class PublicUserSession:
+class TestUserSession:
+    def __init__(self, display_name: Optional[str]):
+        self._name = display_name
+
+    def name(self) -> str:
+        return self._name
+
+
+class PublicUserSession(TestUserSession):
     client_cls = PublicClient
 
-    def __init__(self, user: Optional[User] = None):
+    def __init__(self, user: Optional[User] = None, display_name: Optional[str] = None):
+        super().__init__(display_name or "Anonymous Public User")
         self.client: CoreClientInterface = self.client_cls(user)
 
     async def add_prompt(self, prompt_data: dict[str, any]) -> str:
@@ -40,7 +49,7 @@ class PublicUserSession:
 class PrivateUserSession(PublicUserSession):
     client_cls = PrivatePromptClient
 
-    def __init__(self, user: User):
+    def __init__(self, user: User, display_name: Optional[str] = None):
         if not user:
             raise ValueError("A valid user object is required for PrivateUserSession.")
-        super().__init__(user)
+        super().__init__(user, display_name)
