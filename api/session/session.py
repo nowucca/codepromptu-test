@@ -6,7 +6,7 @@ from api.client.public_client import PublicClient
 from api.client.private_client import PrivatePromptClient
 
 
-class TestUserSession:
+class CoreTestUserSession:
     def __init__(self, display_name: Optional[str]):
         self._name = display_name
 
@@ -14,7 +14,7 @@ class TestUserSession:
         return self._name
 
 
-class PublicUserSession(TestUserSession):
+class PublicUserSession(CoreTestUserSession):
     client_cls = PublicClient
 
     def __init__(self, user: Optional[User] = None, display_name: Optional[str] = None):

@@ -1,6 +1,6 @@
 import pytest
 
-from api.session.session import TestUserSession
+from api.session.session import CoreTestUserSession
 from .base_test import BaseTest
 
 
@@ -11,7 +11,7 @@ class TestPromptCreationRetrieval(BaseTest):
         retrieved_prompt = await user.get_prompt(created_guid)
         return retrieved_prompt
 
-    async def _assert_prompts_equal(self, user: TestUserSession, expected_guid, expected_prompt, actual_prompt):
+    async def _assert_prompts_equal(self, user: CoreTestUserSession, expected_guid, expected_prompt, actual_prompt):
         user_name = user._name
         assert actual_prompt[
                    'guid'] == expected_guid, f"{user_name}'s retrieved prompt GUID does not match the created prompt's GUID."
